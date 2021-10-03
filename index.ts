@@ -62,7 +62,7 @@ export module BlackScholes {
    */
   export function getPrice(s: number, k: number, e: Date, v: number, r: number, direction: Direction) : number{
     let t = Time.untilExpiry(e)
-    var w = (r * t + Math.pow(v, 2) * t / 2 - Math.log(k / s)) / (v * Math.sqrt(t));
+    var w = getOmega(s,k,e,v,r)
     if (direction === Direction.CALL) {
       return s * getStdNormCDF(w) - k * Math.pow(Math.E, -1 * r * t) * getStdNormCDF(w - v * Math.sqrt(t));
     } else {
@@ -75,7 +75,7 @@ export module BlackScholes {
    *
    * @param   {number} s  Current price of the underlying
    * @param   {number} k  Strike price
-   * @param   {Date} e    Time to experiation in years
+   * @param   {Date} e    Date of expiration
    * @param   {number} v  Volatility as a decimal
    * @param   {number} r  Anual risk-free interest rate as a decimal
    * @returns {number} The value of omega
@@ -85,11 +85,3 @@ export module BlackScholes {
     return (r * t + Math.pow(v, 2) * t / 2 - Math.log(k / s)) / (v * Math.sqrt(t));
   }
 }
-
-
-
-
-
-
-
-
