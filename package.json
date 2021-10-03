@@ -4,7 +4,7 @@
   "description": "Option pricing using the Black-Scholes formula.",
   "main": "black-scholes.js",
   "scripts": {
-    "test": "node_modules/mocha/bin/mocha"
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register 'test/**/*.ts' --exit --reporter=xunit --reporter=list --reporter-option output=mocha-result.xml"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,16 @@
   },
   "homepage": "https://github.com/MattL922/black-scholes",
   "devDependencies": {
-    "mocha": "2.0.1"
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.10.2",
+    "mocha": "2.0.1",
+    "ts-node": "^10.2.1",
+    "tsconfig-paths": "^3.11.0",
+    "typescript": "^4.4.3",
+    "typings": "^2.1.1"
+  },
+  "dependencies": {
+    "chai": "^4.3.4"
   }
 }
