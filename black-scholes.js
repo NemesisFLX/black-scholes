@@ -39,23 +39,6 @@ function stdNormCDF(x)
 }
 
 /**
- * Double factorial.  See {@link http://en.wikipedia.org/wiki/Double_factorial|Wikipedia page}.
- * @private
- *
- * @param {Number} n The number to calculate the double factorial of
- * @returns {Number} The double factorial of n
- */
-function _doubleFactorial(n)
-{
-  var val = 1;
-  for(var i = n; i > 1; i-=2)
-  {
-    val *= i;
-  }
-  return val;
-}
-
-/**
  * Black-Scholes option pricing formula.
  * See {@link http://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black-Scholes_formula|Wikipedia page}
  * for pricing puts in addition to calls.
