@@ -14,7 +14,7 @@ describe("Black-Scholes", function () {
         volatility: .2,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal(0.23834902311962125.toFixed(8), price);
     });
     it("should return a put price of 3.5651039155492974", function () {
@@ -25,7 +25,7 @@ describe("Black-Scholes", function () {
         volatility: .2,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal(3.565103915549301.toFixed(8), price);
     });
   });
@@ -38,7 +38,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
     it("should return a put price of 0", function () {
@@ -49,7 +49,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
   });
@@ -62,7 +62,7 @@ describe("Black-Scholes", function () {
         volatility: 0.1,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
     it("should return a put price of 0", function () {
@@ -73,7 +73,7 @@ describe("Black-Scholes", function () {
         volatility: 0.1,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
   });
@@ -86,7 +86,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
     it("should return a put price of 0", function () {
@@ -97,7 +97,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("0.00000000", price);
     });
   });
@@ -114,7 +114,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal(2.673245107570324.toFixed(8), price);
     });
     it("should return a put price of 1.3267548924296761", function () {
@@ -125,7 +125,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal(1.3267548924296761.toFixed(8), price);
     });
   });
@@ -138,7 +138,7 @@ describe("Black-Scholes", function () {
         volatility: 0.1,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("2.00000000", price);
     });
     it("should return a put price of 2", function () {
@@ -149,7 +149,7 @@ describe("Black-Scholes", function () {
         volatility: 0.1,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("2.00000000", price);
     });
   });
@@ -162,7 +162,7 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.CALL,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("2.00000000", price);
     });
     it("should return a put price of 2", function () {
@@ -173,21 +173,8 @@ describe("Black-Scholes", function () {
         volatility: 0,
         riskFreeInterest: .08,
         direction: Direction.PUT,
-      }).price().toFixed(8)
+      }).price.toFixed(8)
       assert.equal("2.00000000", price);
-    });
-  });
-  describe("getW", function () {
-    it("should return -1.00163142954006", function () {
-      let omega = new Warrant({
-        priceUnderlying: 30,
-        strike: 34,
-        expiration: new Date((new Date()).setMilliseconds((new Date()).getMilliseconds() + (91.20833334 * 24 * 60 * 60 * 1000))),
-        volatility: 0.2,
-        riskFreeInterest: .08,
-        direction: Direction.PUT,
-      }).omega().toFixed(8)
-      assert.equal((-1.00163142954006).toFixed(8), omega);
     });
   });
 });

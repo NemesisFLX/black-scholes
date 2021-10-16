@@ -14,7 +14,7 @@ for (let i = 0; i < amount; i++) {
         volatility: Math.random(),
         riskFreeInterest: Math.random(),
         direction: Math.random() >= 0.5 ? Direction.CALL : Direction.PUT,
-    }).price()
+    }).price
 }
 console.timeEnd("Warrant Price")
 
@@ -23,10 +23,10 @@ let params = {
     strike: 13675,
     expiration: new Date("06-16-2023"),
     volatility: 0.2141,
-    riskFreeInterest: 0.0126,
+    riskFreeInterest: 0.00,
     direction: Direction.CALL,
 }
 
-console.log(new Warrant(params).omega())
-console.log(new Warrant(params).price())
+console.log(new Warrant(params).omega)
+console.log(new Warrant(params).price)
 console.log("---------------- Benchmark Price | Started ----------")
