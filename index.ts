@@ -1,87 +1,29 @@
 import { Time } from './src/time'
+import { Statistics } from './src/statistics'
+import { IWarrant, Direction} from './src/warrant'
+export { Direction } from './src/warrant'
 
-/**
- * Black-Scholes option pricing formula and supporting statistical functions.
- * @module black-scholes
- * @author Matt Loppatto <mattloppatto@gmail.com>
- * @copyright 2014 Matt Loppatto
- */
+export class Warrant {
+  private warrant: IWarrant;
 
-
-const sqrt2PI = Math.sqrt(2 * Math.PI);
-
-
-
-export module BlackScholes {
-  
-  export enum Direction {
-    CALL,
-    PUT
+  constructor(warrant: IWarrant) {
+    this.warrant = warrant
   }
 
-  /**
-   * Standard normal cumulative distribution function.  The probability is estimated
-   * by expanding the CDF into a series using the first 100 terms.
-   * See {@link http://en.wikipedia.org/wiki/Normal_distribution#Cumulative_distribution_function|Wikipedia page}.
-   *
-   * @param {number} x The upper bound to integrate over.  This is P{Z <= x} where Z is a standard normal random variable.
-   * @returns {number} The probability that a standard normal random variable will be less than or equal to x
-   */
-  export function getStdNormCDF(x: number) : number {
-    if (x >= 8) return 1;
-    if (x <= -8) return 0;
-    let xx = x * x;
-    let probability = 0;
-    let n = x;
-    let d = 1;
-    for (let i = 3; i <= 199; i += 2) {
-      let prev = probability;
-      probability += n / d;
-      if (prev === probability) break;
-      n *= xx;
-      d *= i;
-    }
-    probability *= Math.exp(-0.5 * xx);
-    probability /= sqrt2PI;
-    probability += 0.5;
-    return probability;
-  }
 
-  /**
-   * Black-Scholes option pricing formula.
-   * See {@link http://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black-Scholes_formula|Wikipedia page}
-   * for pricing puts in addition to calls.
-   *
-   * @param   {number} s            Current price of the underlying
-   * @param   {number} k            Strike price
-   * @param   {Date} e              Date of expiration
-   * @param   {number} v            Volatility as a decimal
-   * @param   {number} r            Anual risk-free interest rate as a decimal
-   * @param   {Direction} direction The type of option to be priced - "call" or "put"
-   * @returns {number}              Price of the option
-   */
-  export function getPrice(s: number, k: number, e: Date, v: number, r: number, direction: Direction) : number{
-    let t = Time.untilExpiry(e)
-    var w = getOmega(s,k,e,v,r)
-    if (direction === Direction.CALL) {
-      return s * getStdNormCDF(w) - k * Math.pow(Math.E, -1 * r * t) * getStdNormCDF(w - v * Math.sqrt(t));
+  price(): number {
+    let time = Time.untilExpiry(this.warrant.expiration)
+    var omega = this.omega()
+    if (this.warrant.direction === Direction.CALL) {
+      return this.warrant.priceUnderlying * Statistics.normCDF(omega) - this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * time) * Statistics.normCDF(omega - this.warrant.volatility * Math.sqrt(time));
     } else {
-      return k * Math.pow(Math.E, -1 * r * t) * getStdNormCDF(v * Math.sqrt(t) - w) - s * getStdNormCDF(-w);
+      return this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * time) * Statistics.normCDF(this.warrant.volatility * Math.sqrt(time) - omega) - this.warrant.priceUnderlying * Statistics.normCDF(-omega);
     }
   }
 
-  /**
-   * Calcuate omega as defined in the Black-Scholes formula.
-   *
-   * @param   {number} s  Current price of the underlying
-   * @param   {number} k  Strike price
-   * @param   {Date} e    Date of expiration
-   * @param   {number} v  Volatility as a decimal
-   * @param   {number} r  Anual risk-free interest rate as a decimal
-   * @returns {number} The value of omega
-   */
-  export function getOmega(s: number, k: number, e: Date, v: number, r: number) : number{
-    let t = Time.untilExpiry(e)
-    return (r * t + Math.pow(v, 2) * t / 2 - Math.log(k / s)) / (v * Math.sqrt(t));
+  omega(): number {
+    let time = Time.untilExpiry(this.warrant.expiration)
+    return (this.warrant.riskFreeInterest * time + Math.pow(this.warrant.volatility, 2) * time / 2 - Math.log(this.warrant.strike / this.warrant.priceUnderlying)) / (this.warrant.volatility * Math.sqrt(time));
   }
+
 }
