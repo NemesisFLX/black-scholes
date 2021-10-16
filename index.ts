@@ -10,7 +10,7 @@ export class Warrant {
     this.warrant = warrant
   }
 
-
+  // https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black-Scholes_formula
   price(): number {
     let time = Time.untilExpiry(this.warrant.expiration)
     var omega = this.omega()
@@ -23,7 +23,7 @@ export class Warrant {
 
   omega(): number {
     let time = Time.untilExpiry(this.warrant.expiration)
-    return (this.warrant.riskFreeInterest * time + Math.pow(this.warrant.volatility, 2) * time / 2 - Math.log(this.warrant.strike / this.warrant.priceUnderlying)) / (this.warrant.volatility * Math.sqrt(time));
+    return (this.warrant.riskFreeInterest * time + Math.pow(this.warrant.volatility, 2) * time / 2 + Math.log(this.warrant.priceUnderlying / this.warrant.strike)) / (this.warrant.volatility * Math.sqrt(time));
   }
 
 }
