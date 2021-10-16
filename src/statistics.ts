@@ -1,7 +1,11 @@
 const sqrt2PI = Math.sqrt(2 * Math.PI);
 
-export module Statistics {
-    export function normCDF(x: number): number {
+export module Statistics.norm {
+    export function pdf(x: number): number {
+        return Math.pow(Math.E, -1 * Math.pow(x, 2) / 2) / Math.sqrt(2 * Math.PI);
+    }
+
+    export function cdf(x: number): number {
         if (x >= 8) return 1;
         if (x <= -8) return 0;
         let xx = x * x;

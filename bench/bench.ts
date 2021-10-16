@@ -1,6 +1,6 @@
 import { Direction, Warrant } from '..';
 
-const amount = Number(process.env.AMOUNT) || 10000
+const amount = Number(process.env.AMOUNT) || 100000
 
 console.log("--------------- Benchmark Price | Finished ----------")
 console.log("------------------ " + amount + " calculations ---------------")
@@ -20,13 +20,19 @@ console.timeEnd("Warrant Price")
 
 let params = {
     priceUnderlying: 15595.08,
-    strike: 13675,
-    expiration: new Date("06-16-2023"),
-    volatility: 0.2141,
-    riskFreeInterest: 0.00,
+    strike: 14425,
+    expiration: new Date("12-17-2021"),
+    volatility: 0.2067,
+    riskFreeInterest: 0.0,
     direction: Direction.CALL,
+    ratio: .01
 }
 
 console.log(new Warrant(params).omega)
 console.log(new Warrant(params).price)
+console.log(new Warrant(params).theta)
+console.log(new Warrant(params).delta)
+console.log(new Warrant(params).gamma)
+console.log(new Warrant(params).rho)
+console.log(new Warrant(params).vega)
 console.log("---------------- Benchmark Price | Started ----------")
