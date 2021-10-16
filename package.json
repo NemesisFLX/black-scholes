@@ -4,7 +4,8 @@
   "description": "Option pricing using the Black-Scholes formula.",
   "main": "black-scholes.js",
   "scripts": {
-    "test": "mocha -r ts-node/register -r tsconfig-paths/register 'test/**/*.ts' --exit --reporter=xunit --reporter=list --reporter-option output=mocha-result.xml"
+    "test": "mocha -r ts-node/register -r tsconfig-paths/register 'test/**/*.ts' --exit --reporter=xunit --reporter=list --reporter-option output=mocha-result.xml",
+    "bench": "npx ts-node ./bench/bench.ts"
   },
   "repository": {
     "type": "git",
