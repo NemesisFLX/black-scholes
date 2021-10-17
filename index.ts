@@ -79,6 +79,9 @@ export class Warrant {
   }
 
   private _delta(): number {
-    return Statistics.norm.cdf(this.d1)
+    if(Direction.CALL === this.warrant.direction)
+      return Statistics.norm.cdf(this.d1) 
+    if(Direction.PUT === this.warrant.direction)
+      return Statistics.norm.cdf(this.d1) - 1
   }
 }

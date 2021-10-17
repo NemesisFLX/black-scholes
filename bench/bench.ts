@@ -19,20 +19,20 @@ for (let i = 0; i < amount; i++) {
 console.timeEnd("Warrant Price")
 
 let params = {
-    priceUnderlying: 218.63,
-    strike: 75,
-    expiration: new Date("01-21-2022"),
-    volatility: 1.1122,
-    riskFreeInterest: 0.0,
-    direction: Direction.CALL,
-    ratio: .4
+    priceUnderlying: 130,
+    strike: 130,
+    expiration: new Date("04-15-2022"),
+    volatility: 0.3,
+    riskFreeInterest: 0.12,
+    direction: Direction.PUT,
+    ratio: 1
 }
 
-console.log(new Warrant(params).omega)
-console.log(new Warrant(params).price)
-console.log(new Warrant(params).theta)
-console.log(new Warrant(params).delta)
-console.log(new Warrant(params).gamma)
-console.log(new Warrant(params).rho)
-console.log(new Warrant(params).vega)
+console.log("omega:", new Warrant(params).omega)
+console.log("Price:", new Warrant(params).price)
+console.log("theta:", new Warrant(params).theta)
+console.log("delta:", new Warrant(params).delta)
+console.log("gamma:", new Warrant(params).gamma)
+console.log("rho:", new Warrant(params).rho)
+console.log("vega:", new Warrant(params).vega)
 console.log("---------------- Benchmark Price | Started ----------")
