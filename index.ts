@@ -6,7 +6,7 @@ export { Direction } from './src/warrant'
 export class Warrant {
   private warrant: IWarrant;
 
-  public price : number;
+  private _price : number;
   public omega : number;
   public theta : number;
   public vega : number;
@@ -16,12 +16,16 @@ export class Warrant {
   private d1 : number;
   private time : number;
 
+  public get price() {
+    return this._price * this.warrant.ratio;
+  }
+
   constructor(warrant: IWarrant) {
     this.warrant = warrant
     this.warrant.ratio = this.warrant.ratio ?? 1
     this.time = Time.untilExpiry(this.warrant.expiration)
     this.d1 = this._d1()
-    this.price = this._price()
+    this._price = this._createPrice()
     this.omega = this._omega()
     this.theta = this._theta()
     this.vega = this._vega()
@@ -31,11 +35,11 @@ export class Warrant {
   }
 
   // https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model#Black-Scholes_formula
-  private _price(): number {
+  private _createPrice(): number {
     if (this.warrant.direction === Direction.CALL) {
-      return (this.warrant.priceUnderlying * Statistics.norm.cdf(this.d1) - this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(this.d1 - this.warrant.volatility * Math.sqrt(this.time))) * this.warrant.ratio;
+      return this.warrant.priceUnderlying * Statistics.norm.cdf(this.d1) - this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(this.d1 - this.warrant.volatility * Math.sqrt(this.time));
     } else {
-      return (this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(this.warrant.volatility * Math.sqrt(this.time) - this.d1) - this.warrant.priceUnderlying * Statistics.norm.cdf(-this.d1)) * this.warrant.ratio;
+      return this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(this.warrant.volatility * Math.sqrt(this.time) - this.d1) - this.warrant.priceUnderlying * Statistics.norm.cdf(-this.d1);
     }
   }
 
@@ -45,10 +49,9 @@ export class Warrant {
 
   private _omega(): number {
     if(Direction.CALL === this.warrant.direction)
-      return Statistics.norm.cdf(this.d1) * (this.warrant.priceUnderlying / this.price)
-      
+      return Statistics.norm.cdf(this.d1) * (this.warrant.priceUnderlying / this._price)
     if(Direction.PUT === this.warrant.direction)
-      return Statistics.norm.cdf((this.d1) - 1) * (this.warrant.priceUnderlying / this.price)
+      return Statistics.norm.cdf((this.d1) - 1) * (this.warrant.priceUnderlying / this._price)
   }
 
   private _theta(): number {
@@ -60,15 +63,15 @@ export class Warrant {
   }
 
   private _vega(): number {
-    return ((this.warrant.priceUnderlying * Statistics.norm.pdf(this.d1) * Math.sqrt(this.time)) * this.warrant.ratio) * this.warrant.ratio
+    return ((this.warrant.priceUnderlying * Statistics.norm.pdf(this.d1) * Math.sqrt(this.time)) * this.warrant.ratio)/100
   }
 
   private _rho(): number {
     if(Direction.CALL === this.warrant.direction)
-      return (this.time * this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.pdf(this.d1 - this.warrant.volatility * Math.sqrt(this.time))) * this.warrant.ratio
+      return (this.time * this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(this.d1 - this.warrant.volatility * Math.sqrt(this.time))) * this.warrant.ratio /100
       
     if(Direction.PUT === this.warrant.direction)
-      return (-1 * this.time * this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.pdf(-(this.d1 - this.warrant.volatility * Math.sqrt(this.time)))) * this.warrant.ratio
+      return (-1 * this.time * this.warrant.strike * Math.pow(Math.E, -1 * this.warrant.riskFreeInterest * this.time) * Statistics.norm.cdf(-(this.d1 - this.warrant.volatility * Math.sqrt(this.time)))) * this.warrant.ratio /100
   }
 
   private _gamma(): number {

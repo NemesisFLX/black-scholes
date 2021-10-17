@@ -19,13 +19,13 @@ for (let i = 0; i < amount; i++) {
 console.timeEnd("Warrant Price")
 
 let params = {
-    priceUnderlying: 15595.08,
-    strike: 14425,
-    expiration: new Date("12-17-2021"),
-    volatility: 0.2067,
+    priceUnderlying: 218.63,
+    strike: 75,
+    expiration: new Date("01-21-2022"),
+    volatility: 1.1122,
     riskFreeInterest: 0.0,
     direction: Direction.CALL,
-    ratio: .01
+    ratio: .4
 }
 
 console.log(new Warrant(params).omega)
