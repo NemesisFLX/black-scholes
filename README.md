@@ -1,5 +1,5 @@
 # Warrant Price and Greeks calculator
-=============
+
 
 Calculates for warrents the price and greeks according to black scholes with a more human interface.
 
