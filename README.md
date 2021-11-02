@@ -1,20 +1,29 @@
-black-scholes
+# Warrant Price and Greeks calculator
 =============
 
-Option pricing using the Black-Scholes formula.
-
-**blackScholes(s, k, t, v, r, callPut)**
-- **s** - Current price of the underlying
-- **k** - Strike price
-- **t** - Time to expiration in years
-- **v** - Volatility as a decimal
-- **r** - Annual risk-free interest rate as a decimal
-- **callPut** - The type of option to be priced - "call" or "put"
+Calculates for warrents the price and greeks according to black scholes with a more human interface.
 
 Usage:
-```
-var bs = require("black-scholes");
+```js
+let params = {
+    priceUnderlying: 130,
+    strike: 130,
+    expiration: new Date("04-15-2022"),
+    volatility: 0.3,
+    riskFreeInterest: 0.12,
+    direction: Direction.PUT,
+    ratio: 1
+}
 
-bs.blackScholes(30, 34, .25, .2, .08, "call"); // 0.23834902311961947
-bs.blackScholes(30, 34, .25, .2, .08, "put"); // 3.5651039155492974
+console.log("omega:", new Warrant(params).omega)
+console.log("Price:", new Warrant(params).price)
+console.log("theta:", new Warrant(params).theta)
+console.log("delta:", new Warrant(params).delta)
+console.log("gamma:", new Warrant(params).gamma)
+console.log("rho:", new Warrant(params).rho)
+console.log("vega:", new Warrant(params).vega)
 ```
+
+## Caveats
+
+American pricing is still really inaccurate.
